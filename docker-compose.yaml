@@ -1,0 +1,42 @@
+version: "3.7"
+
+x-secrets: &default-secrets
+  - db_default_password
+
+# Docker services
+services:
+  db:
+    image: mariadb:10.5-focal
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: coba_dulu
+      MYSQL_TCP_PORT: "3306"
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_default_password
+    secrets: *default-secrets
+    volumes:
+      - database:/var/lib/mysql
+  app:
+    build:
+      context: ./aplikasi
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - ./env/.env
+    tty: true
+    ports:
+      - "8080:8080"
+    secrets: *default-secrets
+    depends_on:
+      - db
+
+# Docker secrets
+secrets:
+  db_default_password:
+    file: ./secrets/db_default_password.txt
+
+# Docker volumes
+volumes:
+  database:
