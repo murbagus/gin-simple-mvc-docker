@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: ./aplikasi
+      dockerfile: Dockerfile.dev
+    image: gin-simple-mvc-docker_dev
+    volumes:
+      - ./aplikasi:/app

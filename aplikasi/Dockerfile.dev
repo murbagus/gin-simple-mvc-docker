@@ -1,0 +1,12 @@
+FROM golang:1.17.1-buster
+
+RUN apt update & apt install
+RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
+
+WORKDIR /app
+
+COPY . .
+
+RUN go mod tidy
+
+CMD ["air"]
