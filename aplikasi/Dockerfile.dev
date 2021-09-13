@@ -9,4 +9,7 @@ COPY . .
 
 RUN go mod tidy
 
+# Dokumentasi API dengan Swagger
+RUN go get -u github.com/swaggo/swag/cmd/swag
+
 CMD ["air"]

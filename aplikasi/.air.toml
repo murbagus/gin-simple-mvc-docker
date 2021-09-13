@@ -7,15 +7,19 @@ tmp_dir = "tmp"
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "go build -o ./tmp/main ."
+# Tambahkan swag init -g ./app/routes/<router>.go --output ./docs/<router>
+cmd = """\
+swag init -g ./app/routes/api.go --output ./docs/api && \
+go build -o ./tmp/main . \
+"""
 # Binary file yields from `cmd`.
 bin = "tmp/main"
 # Customize binary.
 full_bin = "./tmp/main"
 # Watch these filename extensions.
-include_ext = ["go", "tpl", "tmpl", "html"]
+include_ext = ["go", "tpl", "tmpl", "html", "json", "yaml", "yml"]
 # Ignore these filename extensions or directories.
-exclude_dir = ["assets", "tmp", "vendor", "frontend/node_modules"]
+exclude_dir = ["assets", "tmp", "vendor", "frontend/node_modules", "docs"]
 # Watch these directories if you specified.
 include_dir = []
 # Exclude files.
@@ -23,7 +27,7 @@ exclude_file = []
 # Exclude specific regular expressions.
 exclude_regex = ["_test.go"]
 # Exclude unchanged files.
-exclude_unchanged = true
+exclude_unchanged = false
 # Follow symlink for directories
 follow_symlink = true
 # This log file places in your tmp_dir.
