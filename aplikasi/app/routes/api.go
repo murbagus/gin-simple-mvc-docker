@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/murbagus/gin-simple-mvc/app/appcontext"
 	"github.com/murbagus/gin-simple-mvc/app/controllers"
@@ -27,7 +29,9 @@ func CreateRouteApi(app *gin.Engine, context *appcontext.Context) {
 	route := app.Group(routePrefix)
 
 	// Generate dokumentasi api dengan swagger
-	SetUpSwagger(route, routePrefix)
+	if os.Getenv("APP_ENV") != "production" {
+		SetUpSwagger(route, routePrefix)
+	}
 
 	controllers.CreateController(route, context, "/ping", &controllers.PingController{})
 	controllers.CreateController(route, context, "/pengguna", &controllers.PenggunaController{})
