@@ -1,17 +1,9 @@
 package routes
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/gin-gonic/gin"
 	"github.com/murbagus/gin-simple-mvc/app/appcontext"
 	"github.com/murbagus/gin-simple-mvc/app/controllers"
-
-	ginSwagger "github.com/swaggo/gin-swagger"
-	swaggerFiles "github.com/swaggo/gin-swagger/swaggerFiles"
-
-	_ "github.com/murbagus/gin-simple-mvc/docs/api"
 )
 
 // @title Test Docs Route API
@@ -35,9 +27,7 @@ func CreateRouteApi(app *gin.Engine, context *appcontext.Context) {
 	route := app.Group(routePrefix)
 
 	// Generate dokumentasi api dengan swagger
-	docsBaseUrl := fmt.Sprintf("http://%s:%s", os.Getenv("APP_URL"), os.Getenv("APP_PORT"))
-	docsUrl := ginSwagger.URL(docsBaseUrl + routePrefix + "/swagger/doc.json")
-	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, docsUrl))
+	SetUpSwagger(route, routePrefix)
 
 	controllers.CreateController(route, context, "/ping", &controllers.PingController{})
 	controllers.CreateController(route, context, "/pengguna", &controllers.PenggunaController{})
